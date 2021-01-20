@@ -14,7 +14,7 @@ import (
 	"google.golang.org/appengine/urlfetch"
 )
 
-func init() {
+func inityyyy() {
 	http.HandleFunc("/events", eventsHandler)
 }
 
