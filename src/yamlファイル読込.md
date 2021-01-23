@@ -29,7 +29,7 @@ if err != nil {
 fmt.Println(m["env_variables"])
 fmt.Println(m["env_variables"]["SLACK_SIGNING_SECRET"])
 ```
-### ライブラ
+### gopkg.in/yaml.v2
 - https://godoc.org/gopkg.in/yaml.v2
 - yaml.Unmarshal
   - 第一引数をデコードし、第二引数に値を割り当てる
