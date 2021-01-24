@@ -14,7 +14,7 @@
 ```go
 //TODO コード貼付
 ```
-#接続までの流れ
+# 接続までの流れ
 
 ## 1 slack.New
 ```go
@@ -39,7 +39,10 @@ client := socketmode.New(
 - 第一引数にSlackクライアントを受け取る事でSocketモードクライアントを返す
 - https://pkg.go.dev/github.com/slack-go/slack/socketmode?utm_source=gopls#New
 
-## 3 client.Run()
+## 3 socketmode.Run()
+```go
+client.Run()
+```
 - RunメソッドにてソケットモードでSlackと接続する
 - https://pkg.go.dev/github.com/slack-go/slack/socketmode?utm_source=gopls#Client.Run
 
