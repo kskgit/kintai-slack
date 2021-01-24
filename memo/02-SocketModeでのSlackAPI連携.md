@@ -12,7 +12,7 @@ https://github.com/slack-go/slack/blob/master/examples/socketmode/socketmode.go
 
 ### ソースコード
 
-###### slack.New
+#### slack.New
 ```go
 api := slack.New(
 	botToken,
@@ -24,7 +24,7 @@ api := slack.New(
 - 第一引数トークンを受け取る事でSlackクライアントを返す
 - 【公式】https://pkg.go.dev/github.com/slack-go/slack#New
 
-###### socketmode.New
+#### socketmode.New
 ```go
 	client := socketmode.New(
 		api,
@@ -35,11 +35,7 @@ api := slack.New(
 - 第一引数にSlackクライアントを受け取る事でSocketモードクライアントを返す
 - 【公式】https://pkg.go.dev/github.com/slack-go/slack/socketmode?utm_source=gopls#New
 
-
-
-
-
-###### interfaceの型変換
+#### interfaceの型変換
 ```go
 api := slack.New(m["env_slack_keys"]["SLACK_SIGNING_SECRET"].(string))
 ```
@@ -47,6 +43,5 @@ api := slack.New(m["env_slack_keys"]["SLACK_SIGNING_SECRET"].(string))
 
 https://qiita.com/lostfind/items/ad7bfc1a4860bb108b9c#interface%E3%81%AE%E5%A4%89%E6%8F%9B
 
-### os.Getenv
 
 
