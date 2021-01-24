@@ -47,3 +47,11 @@ fmt.Println(m["env_variables"]["SLACK_SIGNING_SECRET"])
 ```
 - 参考
 https://stackoverflow.com/questions/44305617/nested-maps-in-golang
+
+### interfaceの型変換
+```go
+api := slack.New(m["env_slack_keys"]["SLACK_SIGNING_SECRET"].(string))
+```
+- `m["env_slack_keys"]["SLACK_SIGNING_SECRET"]`はinterface型のため、`(string)`で型を変換する必要がある
+
+https://qiita.com/lostfind/items/ad7bfc1a4860bb108b9c#interface%E3%81%AE%E5%A4%89%E6%8F%9B
