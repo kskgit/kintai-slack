@@ -33,7 +33,7 @@ client := socketmode.New(
 )
 ```
 - 第一引数にSlackクライアントを受け取る事でSocketモードクライアントを返す
-- 【公式】https://pkg.go.dev/github.com/slack-go/slack/socketmode?utm_source=gopls#New
+- https://pkg.go.dev/github.com/slack-go/slack/socketmode?utm_source=gopls#New
 
 ### interfaceの型変換
 ```go
