@@ -1,10 +1,18 @@
 # SocketModeでのSlackAPI連携
-TODO ソースコードをベタ貼りする
-【公式】https://pkg.go.dev/github.com/slack-go/slack
-【公式】https://pkg.go.dev/github.com/slack-go/slack/socketmode?utm_source=gopls
+開発中は外部に公開する事なくSlackに接続したいため、SocketModeを使用してSlackに接続する。
 
+### socketモードとは
+- 外部にAPIを公開する事なくSlackと通信可能
+- 【公式】socketモードについての説明
+https://api.slack.com/apis/connections/socket
 
-### slack.New
+### 参考にしたコード
+- slack-goを用いたsocket接続のサンプルコード 
+https://github.com/slack-go/slack/blob/master/examples/socketmode/socketmode.go
+
+### ソースコード
+
+###### slack.New
 ```go
 api := slack.New(
 	botToken,
@@ -13,10 +21,10 @@ api := slack.New(
 	slack.OptionAppLevelToken(appToken),
 )
 ```
-- 第一引数
+- 第一引数トークンを受け取る事でSlackクライアントを返す
 - 【公式】https://pkg.go.dev/github.com/slack-go/slack#New
 
-
+###### socketmode.New
 ```go
 	client := socketmode.New(
 		api,
@@ -24,17 +32,14 @@ api := slack.New(
 		socketmode.OptionLog(log.New(os.Stdout, "socketmode: ", log.Lshortfile|log.LstdFlags)),
 	)
 ```
-- 第一引数に
+- 第一引数にSlackクライアントを受け取る事でSocketモードクライアントを返す
 - 【公式】https://pkg.go.dev/github.com/slack-go/slack/socketmode?utm_source=gopls#New
 
-### socketモードとは
-- 【公式】socketモードについての説明
-https://api.slack.com/apis/connections/socket
 
-- slack-goを用いたsocket接続のサンプルコード 
-https://github.com/slack-go/slack/blob/master/examples/socketmode/socketmode.go
 
-### interfaceの型変換
+
+
+###### interfaceの型変換
 ```go
 api := slack.New(m["env_slack_keys"]["SLACK_SIGNING_SECRET"].(string))
 ```
