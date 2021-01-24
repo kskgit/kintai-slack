@@ -3,12 +3,12 @@
 
 ### socketモードとは
 - 外部にAPIを公開する事なくSlackと通信可能
-- 【公式】socketモードについての説明
-https://api.slack.com/apis/connections/socket
+- socketモードについての説明
+- https://api.slack.com/apis/connections/socket
 
 ### 参考にしたコード
 - slack-goを用いたsocket接続のサンプルコード 
-https://github.com/slack-go/slack/blob/master/examples/socketmode/socketmode.go
+- https://github.com/slack-go/slack/blob/master/examples/socketmode/socketmode.go
 
 ### ソースコード
 
@@ -22,7 +22,7 @@ api := slack.New(
 )
 ```
 - 第一引数トークンを受け取る事でSlackクライアントを返す
-- 【公式】https://pkg.go.dev/github.com/slack-go/slack#New
+- https://pkg.go.dev/github.com/slack-go/slack#New
 
 #### socketmode.New
 ```go
