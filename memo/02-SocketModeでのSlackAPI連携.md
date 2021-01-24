@@ -10,10 +10,6 @@
 - slack-goを用いたsocket接続のサンプルコード 
 - https://github.com/slack-go/slack/blob/master/examples/socketmode/socketmode.go
 
-# ソースコード
-```go
-//TODO コード貼付
-```
 # 接続までの流れ
 
 ## 1 slack.New
