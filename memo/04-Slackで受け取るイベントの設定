@@ -2,3 +2,6 @@
 「開始」、「休憩」、「終了」のいずれかの文字が投稿された場合イベントを受け取りたい
 
 https://qiita.com/kanaxx/items/c29267d88c3fb2cc381c
+
+- 全てのイベントタイプ
+  - https://api.slack.com/events
