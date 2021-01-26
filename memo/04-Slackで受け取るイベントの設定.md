@@ -19,7 +19,7 @@ https://qiita.com/kanaxx/items/c29267d88c3fb2cc381c
 - https://api.slack.com/events/message.im
 
 # コード抜粋
-```
+```go
 	go func() {
 		for evt := range client.Events {
 			switch evt.Type {
