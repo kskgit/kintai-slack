@@ -10,4 +10,4 @@ https://qiita.com/kanaxx/items/c29267d88c3fb2cc381c
 # 受け取れたが以下2点が不明
 - どのイベントで受け取れたのか
 - 日本語を直接受け取れないのか
-https://qiita.com/uchiko/items/1810ddacd23fd4d3c934
+- https://qiita.com/uchiko/items/1810ddacd23fd4d3c934
