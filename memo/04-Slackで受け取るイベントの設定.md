@@ -1,8 +1,5 @@
 # やりたい事
 「開始」、「休憩」、「終了」のいずれかの文字が投稿された場合イベントを受け取りたい
-https://qiita.com/kanaxx/items/c29267d88c3fb2cc381c
-- 全てのイベントタイプ
-  - https://api.slack.com/events
 
 # Slackの設定
 ## 結論
@@ -43,8 +40,9 @@ https://qiita.com/kanaxx/items/c29267d88c3fb2cc381c
 ```
 ## イベントの受取
 - `client.Events`をrangeでループ
--`socketmode.EventTypeSlashCommand`でスラッシュコマンドのイベントを受取
+- `socketmode.EventTypeSlashCommand`でスラッシュコマンドのイベントを受取
 
 ## 参考
 https://github.com/slack-go/slack/blob/master/examples/socketmode/socketmode.go
 https://pkg.go.dev/github.com/slack-go/slack/socketmode?utm_source=gopls#EventType
+https://api.slack.com/events
