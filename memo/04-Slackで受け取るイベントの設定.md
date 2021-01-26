@@ -6,8 +6,9 @@ https://qiita.com/kanaxx/items/c29267d88c3fb2cc381c
 - 全てのイベントタイプ
   - https://api.slack.com/events
 
+# Slackの設定
+- 今回はボットにダイレクトメッセージを送った際にテキストを受け取るため、`message.im`イベントを用いる
+- https://api.slack.com/events/message.im
 
-# 受け取れたが以下2点が不明
-- どのイベントで受け取れたのか
 - 日本語を直接受け取れないのか
 - https://qiita.com/uchiko/items/1810ddacd23fd4d3c934
