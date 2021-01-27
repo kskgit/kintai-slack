@@ -1,66 +1,63 @@
-package slackbot
+package main
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"net/http"
+	"log"
 	"os"
 
-	"github.com/nlopes/slack"
-	"github.com/nlopes/slack/slackevents"
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/log"
-	"google.golang.org/appengine/urlfetch"
+	"github.com/slack-go/slack"
+	"github.com/slack-go/slack/socketmode"
 )
 
-func init() {
-	http.HandleFunc("/events", eventsHandler)
-}
+var env_values = make(map[interface{}]map[interface{}]interface{})
 
-func eventsHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := appengine.NewContext(r)
-	token := os.Getenv("SLACK_BOT_TOKEN")
-	slack.SetHTTPClient(urlfetch.Client(ctx))
-	api := slack.New(token)
-
-	defer r.Body.Close()
-	var buf bytes.Buffer
-	buf.ReadFrom(r.Body)
-	body := buf.String()
-
-	verifytoken := os.Getenv("SLACK_VERIFY_TOKEN")
-	opt := slackevents.OptionVerifyToken(&slackevents.TokenComparator{verifytoken})
-	evt, err := slackevents.ParseEvent(json.RawMessage(body), opt)
+func main() {
+	err := init_env(&env_values)
 	if err != nil {
-		log.Errorf(ctx, "ParseEvent: %v", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		panic(err)
 	}
 
-	if evt.Type == slackevents.URLVerification {
-		var r *slackevents.ChallengeResponse
-		err := json.Unmarshal([]byte(body), &r)
-		if err != nil {
-			log.Errorf(ctx, "%v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		fmt.Fprint(w, r.Challenge)
-		return
-	}
+	appToken := env_values["slack_keys"]["SLACK_APP_TOKEN"].(string)
+	// todo エラー処理
+	botToken := env_values["slack_keys"]["SLACK_BOT_TOKEN"].(string)
+	// todo エラー処理
 
-	log.Infof(ctx, "Event:%#v", evt)
-	if evt.Type == slackevents.CallbackEvent {
-		var postParams slack.PostMessageParameters
-		switch evt := evt.InnerEvent.Data.(type) {
-		case *slackevents.AppMentionEvent:
-			_, _, err := api.PostMessage(evt.Channel, "こんにちは", postParams)
-			if err != nil {
-				log.Errorf(ctx, "%v", err)
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
+	api := slack.New(
+		botToken,
+		slack.OptionDebug(true),
+		slack.OptionLog(log.New(os.Stdout, "api: ", log.Lshortfile|log.LstdFlags)),
+		slack.OptionAppLevelToken(appToken),
+	)
+
+	client := socketmode.New(
+		api,
+		socketmode.OptionDebug(true),
+		socketmode.OptionLog(log.New(os.Stdout, "socketmode: ", log.Lshortfile|log.LstdFlags)),
+	)
+
+	go func() {
+		for evt := range client.Events {
+			switch evt.Type {
+			case socketmode.EventTypeConnecting:
+				fmt.Println("Connecting to Slack with Socket Mode...")
+			case socketmode.EventTypeConnected:
+				fmt.Println("Connected to Slack with Socket Mode.")
+			case socketmode.EventTypeSlashCommand:
+				cmd, ok := evt.Data.(slack.SlashCommand)
+				if !ok {
+					fmt.Printf("Ignored %+v\n", evt)
+
+					continue
+				}
+				fmt.Printf("cmd received==== %+v\n", cmd)
+				// 開始
+				// firestoreに開始時間を保存
+			default:
+				fmt.Fprintf(os.Stderr, "Unexpected event type received: %s\n", evt.Type)
 			}
 		}
-	}
+	}()
+
+	client.Run()
+
 }
