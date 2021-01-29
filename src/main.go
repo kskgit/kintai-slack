@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
 
+	firebase "firebase.google.com/go"
 	"github.com/slack-go/slack"
 	"github.com/slack-go/slack/socketmode"
+	"google.golang.org/api/option"
 )
 
 var env_values = make(map[interface{}]map[interface{}]interface{})
@@ -36,6 +39,17 @@ func main() {
 	)
 
 	go func() {
+		ctx := context.Background()
+		sa := option.WithCredentialsFile("src/kintai-slack-firebase-adminsdk-1pbri-90fe41bf4c.json")
+		app, err := firebase.NewApp(ctx, nil, sa)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		firebase_client, err := app.Firestore(ctx)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		defer firebase_client.Close()
 		for evt := range client.Events {
 			switch evt.Type {
 			case socketmode.EventTypeConnecting:

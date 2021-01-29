@@ -1,2 +1,5 @@
 /src/*.yaml
 /src/*.json
+/src/*.exe
+/src/*.sum
+/.DS_Store
