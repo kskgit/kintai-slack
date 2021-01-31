@@ -43,6 +43,6 @@
 - `socketmode.EventTypeSlashCommand`でスラッシュコマンドのイベントを受取
 
 ## 参考
-https://github.com/slack-go/slack/blob/master/examples/socketmode/socketmode.go
-https://pkg.go.dev/github.com/slack-go/slack/socketmode?utm_source=gopls#EventType
-https://api.slack.com/events
+- https://github.com/slack-go/slack/blob/master/examples/socketmode/socketmode.go
+- https://pkg.go.dev/github.com/slack-go/slack/socketmode?utm_source=gopls#EventType
+- https://api.slack.com/events
