@@ -5,8 +5,6 @@
 # 参考
 https://firebase.google.com/docs/firestore/quickstart?hl=ja#add_data
 
-
-
 ## go getしたライブラリはどこに格納されてる？
 - `$GOPATH/go/`
   - https://golang.org/doc/articles/go_command.html#tmp_3
@@ -31,3 +29,6 @@ go mod init  github.com/kskgit/kintai-slack
 go build
 ```
 - 関連するmoduleが取得された
+
+# firestore VS Realtime Database
+https://techblog.kayac.com/rtdb-vs-firestore
