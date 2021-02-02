@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"reflect"
+	"time"
 
 	firebase "firebase.google.com/go"
 	"github.com/slack-go/slack"
@@ -39,8 +41,9 @@ func main() {
 	)
 
 	go func() {
+		// firestore接続
 		ctx := context.Background()
-		sa := option.WithCredentialsFile("src/kintai-slack-firebase-adminsdk-1pbri-90fe41bf4c.json")
+		sa := option.WithCredentialsFile("./kintai-slack-firebase-adminsdk-1pbri-90fe41bf4c.json")
 		app, err := firebase.NewApp(ctx, nil, sa)
 		if err != nil {
 			log.Fatalln(err)
@@ -49,7 +52,8 @@ func main() {
 		if err != nil {
 			log.Fatalln(err)
 		}
-		defer firebase_client.Close()
+		// client["SocketModeMessagePayload"]
+		// イベント受け取り
 		for evt := range client.Events {
 			switch evt.Type {
 			case socketmode.EventTypeConnecting:
@@ -63,15 +67,37 @@ func main() {
 
 					continue
 				}
-				fmt.Printf("cmd received==== %+v\n", cmd)
 				// 開始
 				// firestoreに開始時間を保存
+				if cmd.Text == "開始" {
+					// キーを取得
+					time := time.Now()
+					const layout = "YYYYY/MM/DD"
+					formated_time := time.Format(layout)
+					user_id := cmd.UserID
+					fmt.Printf("formated_time==== %+v\n", reflect.TypeOf(formated_time))
+					fmt.Printf("user_id==== %+v\n", reflect.TypeOf(user_id))
+					// firestoreに保存
+					_, _, err := firebase_client.Collection("attendances").Add(ctx, map[string]map[string]map[string]interface{}{
+						formated_time: {
+							user_id: {
+								"start": time,
+							},
+						},
+					})
+					if err != nil {
+						log.Fatalf("Failed adding alovelace: %v", err)
+					}
+				}
+
+				defer firebase_client.Close()
 			default:
 				fmt.Fprintf(os.Stderr, "Unexpected event type received: %s\n", evt.Type)
 			}
 		}
 	}()
 
+	// サーバー起動
 	client.Run()
 
 }
