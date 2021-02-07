@@ -32,7 +32,7 @@ go mod init  github.com/kskgit/kintai-slack
 
 # Realtime Databaseの使い方
 ## 使用ライブラリ
-- とりあえず公式の通り`cloud.google.com/go/firestore v1.4.0`を使用
+- とりあえず公式の通り`firebase.google.com/go`を使用
 ## 初期化
 ```go
 		ctx := context.Background()
