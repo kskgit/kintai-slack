@@ -31,6 +31,8 @@ go mod init  github.com/kskgit/kintai-slack
 - 対象フォルダで`go build`すると依存関係が解決される
 
 # Realtime Databaseの使い方
+## 使用ライブラリ
+- とりあえず公式の通り`cloud.google.com/go/firestore v1.4.0`を使用
 ## 初期化
 ```go
 		ctx := context.Background()
