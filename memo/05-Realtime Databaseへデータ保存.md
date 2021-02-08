@@ -36,22 +36,22 @@ go mod init  github.com/kskgit/kintai-slack
 - とりあえず公式の通り`firebase.google.com/go`を使用
 ## 初期化
 ```go
-		ctx := context.Background()
-		conf := &firebase.Config{
-			DatabaseURL: "https://databaseName.firebaseio.com",
-		}
-		// Fetch the service account key JSON file contents
-		opt := option.WithCredentialsFile("path/to/serviceAccountKey.json")
+ctx := context.Background()
+conf := &firebase.Config{
+	DatabaseURL: "https://databaseName.firebaseio.com",
+}
+// Fetch the service account key JSON file contents
+opt := option.WithCredentialsFile("path/to/serviceAccountKey.json")
 
-		app, err := firebase.NewApp(ctx, conf, opt)
-		if err != nil {
-			log.Fatalln("Error initializing app:", err)
-		}
+app, err := firebase.NewApp(ctx, conf, opt)
+if err != nil {
+	log.Fatalln("Error initializing app:", err)
+}
 
-		rtb_client, err := app.Database(ctx)
-		if err != nil {
-			log.Fatalln("Error initializing database client:", err)
-		}
+rtb_client, err := app.Database(ctx)
+if err != nil {
+	log.Fatalln("Error initializing database client:", err)
+}
 ```
 - （参考）https://firebase.google.com/docs/database/admin/start?hl=ja
 
