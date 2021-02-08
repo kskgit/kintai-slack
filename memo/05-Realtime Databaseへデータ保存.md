@@ -8,7 +8,7 @@ https://techblog.kayac.com/rtdb-vs-firestore
 # 参考
 https://firebase.google.com/docs/firestore/quickstart?hl=ja#add_data
 
-#インストールしたライブラリの使い方
+# インストールしたライブラリの使い方
 - `go get`したら使えるようになると思い込んでて少し詰まった・・・
 
 ## そもそもgo getしたライブラリはどこに格納されてる？
@@ -59,3 +59,6 @@ go mod init  github.com/kskgit/kintai-slack
 ref := rtb_client.NewRef("time-log")
 ```
 - `time-log`キーが無ければ新規作成されるしあればキー配下の値を取得する
+
+### JSON形式値取得方法
+https://qiita.com/yukpiz/items/9d81da697c9c9faab83d#%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8Bget
