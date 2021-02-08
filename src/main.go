@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"reflect"
 	"time"
 
 	firebase "firebase.google.com/go"
@@ -15,6 +14,10 @@ import (
 )
 
 var env_values = make(map[interface{}]map[interface{}]interface{})
+
+type TimeLog map[string]map[string]struct {
+	Start string `json:"start"`
+}
 
 func main() {
 	err := init_env(&env_values)
@@ -41,18 +44,23 @@ func main() {
 	)
 
 	go func() {
-		// firestore接続
+		//
+		// Realtime Database
+		//
 		ctx := context.Background()
-		sa := option.WithCredentialsFile("./kintai-slack-firebase-adminsdk-1pbri-90fe41bf4c.json")
-		app, err := firebase.NewApp(ctx, nil, sa)
-		if err != nil {
-			log.Fatalln(err)
+		conf := &firebase.Config{
+			DatabaseURL: "https://kintai-slack-default-rtdb.firebaseio.com/",
 		}
-		firebase_client, err := app.Firestore(ctx)
+		opt := option.WithCredentialsFile("./kintai-slack-firebase-adminsdk-1pbri-90fe41bf4c.json")
+		app, err := firebase.NewApp(ctx, conf, opt)
 		if err != nil {
-			log.Fatalln(err)
+			log.Fatalln("Error initializing app:", err)
 		}
-		// client["SocketModeMessagePayload"]
+		rtb_client, err := app.Database(ctx)
+		if err != nil {
+			log.Fatalln("Error initializing database client:", err)
+		}
+
 		// イベント受け取り
 		for evt := range client.Events {
 			switch evt.Type {
@@ -68,29 +76,38 @@ func main() {
 					continue
 				}
 				// 開始
-				// firestoreに開始時間を保存
 				if cmd.Text == "開始" {
-					// キーを取得
-					time := time.Now()
-					const layout = "YYYYY/MM/DD"
-					formated_time := time.Format(layout)
-					user_id := cmd.UserID
-					fmt.Printf("formated_time==== %+v\n", reflect.TypeOf(formated_time))
-					fmt.Printf("user_id==== %+v\n", reflect.TypeOf(user_id))
-					// firestoreに保存
-					_, _, err := firebase_client.Collection("attendances").Add(ctx, map[string]map[string]map[string]interface{}{
-						formated_time: {
-							user_id: {
-								"start": time,
+					base_time := time.Now()
+					const date_layout = "2006-01-02"
+					date := base_time.Format(date_layout)
+					const time_layout = "15:04:05"
+					time := base_time.Format(time_layout)
+					// 事前に同日の開始時間有無を確認
+					// 既に開始時間がある場合は開始時間を更新するか確認
+					ex_ref := rtb_client.NewRef("time-log/" + cmd.UserID + "/" + date + "/start")
+					var startTimeLog string
+					if err := ex_ref.Get(ctx, &startTimeLog); err != nil {
+						fmt.Println("===error")
+						log.Fatalln("Error reading value:", err)
+					}
+					if len(startTimeLog) > 0 {
+						// 開始時間を更新するか確認する処理
+						fmt.Println("===開始時間を更新するか確認する")
+					}
+					// 開始時間更新
+					ref := rtb_client.NewRef("time-log")
+					err := ref.Set(ctx, TimeLog{
+						cmd.UserID: {
+							date: {
+								Start: time,
 							},
 						},
 					})
 					if err != nil {
-						log.Fatalf("Failed adding alovelace: %v", err)
+						log.Fatalln("Error setting value:", err)
 					}
 				}
 
-				defer firebase_client.Close()
 			default:
 				fmt.Fprintf(os.Stderr, "Unexpected event type received: %s\n", evt.Type)
 			}
