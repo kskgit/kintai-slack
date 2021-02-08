@@ -7,6 +7,7 @@ https://techblog.kayac.com/rtdb-vs-firestore
 
 # 参考
 https://firebase.google.com/docs/firestore/quickstart?hl=ja#add_data
+https://qiita.com/yukpiz/items/9d81da697c9c9faab83d#%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8Bget
 
 # インストールしたライブラリの使い方
 - `go get`したら使えるようになると思い込んでて少し詰まった・・・
@@ -56,9 +57,24 @@ go mod init  github.com/kskgit/kintai-slack
 
 ## 値取得
 ```go
-ref := rtb_client.NewRef("time-log")
-```
-- `time-log`キーが無ければ新規作成されるしあればキー配下の値を取得する
+// start配下の値を取得する
+ex_ref := rtb_client.NewRef("time-log/" + cmd.UserID + "/" + date + "/start")
 
-### JSON形式値取得方法
-https://qiita.com/yukpiz/items/9d81da697c9c9faab83d#%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8Bget
+// 受取る値を定義
+// 型はstart配下の値の型を定義
+var startTimeLog string
+
+// 値を取得
+if err := ex_ref.Get(ctx, &startTimeLog); err != nil {
+	fmt.Println("===error")
+	log.Fatalln("Error reading value:", err)
+}
+
+// 値の有無で条件分岐
+// stringの空文字判定はlengthで行う
+if len(startTimeLog) > 0 {
+	// 開始時間を更新するか確認する処理
+	fmt.Println("===開始時間を更新するか確認する")
+}
+```
+
